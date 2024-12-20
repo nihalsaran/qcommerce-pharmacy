@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Tesseract from 'tesseract.js';
+import { useNavigate } from 'react-router-dom';
 import './UploadPrescriptionPage.css';
 
 const UploadPrescriptionPage = () => {
@@ -7,6 +8,11 @@ const UploadPrescriptionPage = () => {
   const [ocrResult, setOcrResult] = useState('');
   const [medicines, setMedicines] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate(); // Add this hook
+
+  const handleBack = () => {
+    navigate(-1);
+  };
 
   // Handle file input change
   const handleFileChange = (e) => {
@@ -50,6 +56,9 @@ const UploadPrescriptionPage = () => {
   return (
     <div className="upload-page">
       <header className="header">
+      <button onClick={handleBack} className="back-button">
+          ← Back
+        </button>
         <div className="logo">PharmIt</div>
       </header>
 

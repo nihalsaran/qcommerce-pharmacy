@@ -1,0 +1,66 @@
+/* Upload Prescription Page Styles */
+.upload-section {
+    padding: 50px 20px;
+    text-align: center;
+    background-color: white;
+  }
+  
+  .upload-section h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .upload-input {
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .image-preview {
+    margin-bottom: 20px;
+  }
+  
+  .image-preview img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+  
+  .extract-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #1e40af;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .extract-button:disabled {
+    background-color: #d1d5db;
+  }
+  
+  .ocr-result {
+    margin-top: 20px;
+    background-color: #f9fafb;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .medicine-list {
+    margin-top: 20px;
+  }
+  
+  .medicine-list ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .medicine-list li {
+    background-color: #f0f0f0;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+  }
+  

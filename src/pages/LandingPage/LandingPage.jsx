@@ -3,6 +3,17 @@ import { Link } from 'react-router-dom'; // Assuming you're using React Router
 import './LandingPage.css';
 
 const LandingPage = () => {
+  const medicines = [
+    { name: 'Paracetamol', description: 'Pain reliever and a fever reducer.' },
+    { name: 'Ibuprofen', description: 'Nonsteroidal anti-inflammatory drug (NSAID).' },
+    { name: 'Aspirin', description: 'Used to reduce pain, fever, or inflammation.' },
+    { name: 'Antacid', description: 'Neutralizes stomach acidity.' },
+    { name: 'Cough Syrup', description: 'Relieves cough and throat irritation.' },
+    { name: 'Antihistamine', description: 'Relieves allergy symptoms.' },
+    { name: 'Vitamin C', description: 'Boosts the immune system.' },
+    { name: 'Loperamide', description: 'Used to treat diarrhea.' }
+  ];
+
   return (
     <div className="landing-page">
       {/* Header */}
@@ -28,11 +39,10 @@ const LandingPage = () => {
       <section className="popular-medicines">
         <h2 className="section-title">Popular Medicines</h2>
         <div className="medicine-grid">
-          {/* Replace with dynamic content */}
-          {Array.from({ length: 8 }).map((_, idx) => (
+          {medicines.map((medicine, idx) => (
             <div key={idx} className="medicine-item">
-              <h3>Medicine {idx + 1}</h3>
-              <p>Description of medicine {idx + 1}.</p>
+              <h3>{medicine.name}</h3>
+              <p>{medicine.description}</p>
             </div>
           ))}
         </div>

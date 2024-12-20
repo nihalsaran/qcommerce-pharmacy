@@ -7,7 +7,7 @@ const LandingPage = () => {
     <div className="landing-page">
       {/* Header */}
       <header className="header">
-        <div className="logo">MediQuick</div>
+        <div className="logo">PharmIt</div>
         <nav className="nav">
           <Link to="/login">Login</Link>
           <Link to="/cart">Cart</Link>
@@ -40,8 +40,7 @@ const LandingPage = () => {
 
       {/* Footer */}
       <footer className="footer">
-        <p>&copy; 2024 MediQuick. All rights reserved.</p>
-        <p>Contact Us: support@mediquick.com</p>
+        <p>&copy; 2024 PharmIt. All rights reserved.</p>
       </footer>
     </div>
   );

@@ -50,7 +50,7 @@ const UploadPrescriptionPage = () => {
   return (
     <div className="upload-page">
       <header className="header">
-        <div className="logo">MediQuick</div>
+        <div className="logo">PharmIt</div>
       </header>
 
       <section className="upload-section">
@@ -97,8 +97,7 @@ const UploadPrescriptionPage = () => {
       </section>
 
       <footer className="footer">
-        <p>&copy; 2024 MediQuick. All rights reserved.</p>
-        <p>Contact Us: support@mediquick.com</p>
+        <p>&copy; 2024 PharmIt. All rights reserved.</p>
       </footer>
     </div>
   );

@@ -58,7 +58,7 @@ const SearchPage = () => {
       <button onClick={handleBack} className="back-button">
           ← Back
         </button>
-        <div className="logo">MediQuick</div>
+        <div className="logo">PharmIt</div>
       </header>
 
       <section className="search-section">
@@ -101,8 +101,7 @@ const SearchPage = () => {
       </section>
 
       <footer className="footer">
-        <p>&copy; 2024 MediQuick. All rights reserved.</p>
-        <p>Contact Us: support@mediquick.com</p>
+        <p>&copy; 2024 PharmIt. All rights reserved.</p>
       </footer>
     </div>
   );

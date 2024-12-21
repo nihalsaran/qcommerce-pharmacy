@@ -1,127 +1,131 @@
 /* Search Page Styles */
 .search-section {
-    padding: 50px 20px;
-    text-align: center;
-    background-color: white;
-  }
-  
-  .search-section h1 {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-  
-  .search-form {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 30px;
-    position: relative;
-  }
-  
-  .search-input {
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 300px;
-  }
-  
-  .search-button {
-    padding: 10px 20px;
-    font-size: 1rem;
-    background-color: #1e40af;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-left: 10px;
-  }
-  
-  .results {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .medicine-item {
-    background-color: #f9fafb;
-    padding: 15px;
-    margin: 10px 0;
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 80%;
-    max-width: 400px;
-  }
-  
-  .medicine-item h3 {
-    font-size: 1.2rem;
-    font-weight: bold;
-  }
-  
-  .medicine-item p {
-    font-size: 1rem;
-    color: #4b5563;
-    margin-bottom: 10px;
-  }
-  
-  .add-to-cart {
-    padding: 8px 15px;
-    font-size: 1rem;
-    background-color: #10b981;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .add-to-cart:hover {
-    background-color: #059669;
-  }
-  
-  .suggestions-list {
-    list-style-type: none;
-    padding: 5px 10px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    max-height: 200px;
-    overflow-y: auto;
-    position: absolute;
-    z-index: 10;
-    width: 300px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .suggestion-item {
-    padding: 8px;
-    cursor: pointer;
-  }
-  
-  .suggestion-item:hover {
-    background-color: #f0f0f0;
-  }
-  
-  .search-input {
-    width: 300px;
-  }
-  
-  .back-button {
-    padding: 8px 16px;
-    background: none;
-    border: none;
-    color: #333;
-    cursor: pointer;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-  
-  .back-button:hover {
-    opacity: 0.8;
-  }
-  
-  .header {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
+  padding: 50px 20px;
+  text-align: center;
+  background-color: white;
+  position: relative;
+}
+
+.back-button {
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  color: #333;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.back-button:hover {
+  opacity: 0.8;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.search-section h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.search-form {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.search-input {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 300px;
+}
+
+.search-button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #1e40af;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.medicine-item {
+  background-color: #f9fafb;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 400px;
+}
+
+.medicine-item h3 {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.medicine-item p {
+  font-size: 1rem;
+  color: #4b5563;
+  margin-bottom: 10px;
+}
+
+.add-to-cart {
+  padding: 8px 15px;
+  font-size: 1rem;
+  background-color: #10b981;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-to-cart:hover {
+  background-color: #059669;
+}
+
+.suggestions-list {
+  list-style-type: none;
+  padding: 5px 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  position: absolute;
+  z-index: 10;
+  width: 300px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.suggestion-item {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0;
+}
+
+.search-input {
+  width: 300px;
+}

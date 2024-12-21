@@ -1,18 +1,63 @@
-import React from 'react';
-import { Link } from 'react-router-dom'; // Assuming you're using React Router
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './LandingPage.css';
 
+const API_BASE_URL = 'https://scz1zjz2-1337.inc1.devtunnels.ms/api'; // Replace with your Strapi base URL
+
 const LandingPage = () => {
-  const medicines = [
-    { name: 'Paracetamol', description: 'Pain reliever and a fever reducer.' },
-    { name: 'Ibuprofen', description: 'Nonsteroidal anti-inflammatory drug (NSAID).' },
-    { name: 'Aspirin', description: 'Used to reduce pain, fever, or inflammation.' },
-    { name: 'Antacid', description: 'Neutralizes stomach acidity.' },
-    { name: 'Cough Syrup', description: 'Relieves cough and throat irritation.' },
-    { name: 'Antihistamine', description: 'Relieves allergy symptoms.' },
-    { name: 'Vitamin C', description: 'Boosts the immune system.' },
-    { name: 'Loperamide', description: 'Used to treat diarrhea.' }
-  ];
+  const [medicines, setMedicines] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if user is logged in by looking for token in localStorage
+    const token = localStorage.getItem('token');
+    setIsAuthenticated(!!token);
+    
+    const fetchMedicines = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/medicines?populate=*`);
+        setMedicines(response.data.data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching medicines:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchMedicines();
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsAuthenticated(false);
+    navigate('/');
+  };
+
+  const handleCartClick = (e) => {
+    if (!isAuthenticated) {
+      e.preventDefault();
+      setShowLoginPopup(true);
+    }
+  };
+
+  useEffect(() => {
+    const fetchMedicines = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/medicines?populate=*`);
+        setMedicines(response.data.data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching medicines:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchMedicines();
+  }, []);
 
   return (
     <div className="landing-page">
@@ -20,10 +65,27 @@ const LandingPage = () => {
       <header className="header">
         <div className="logo">PharmIt</div>
         <nav className="nav">
-          <Link to="/login">Login</Link>
-          <Link to="/cart">Cart</Link>
+          {isAuthenticated ? (
+            <button onClick={handleLogout} className="nav-link">Logout</button>
+          ) : (
+            <Link to="/login">Login</Link>
+          )}
+          <Link to="/cart" onClick={handleCartClick}>Cart</Link>
         </nav>
       </header>
+
+      {showLoginPopup && (
+        <div className="popup-overlay">
+          <div className="popup">
+            <h3>Please Login</h3>
+            <p>You need to login to access the cart</p>
+            <div className="popup-buttons">
+              <Link to="/login" className="login-btn">Login</Link>
+              <button onClick={() => setShowLoginPopup(false)} className="close-btn">Close</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Hero Section */}
       <section className="hero">
@@ -38,14 +100,33 @@ const LandingPage = () => {
       {/* Popular Medicines Section */}
       <section className="popular-medicines">
         <h2 className="section-title">Popular Medicines</h2>
-        <div className="medicine-grid">
-          {medicines.map((medicine, idx) => (
-            <div key={idx} className="medicine-item">
-              <h3>{medicine.name}</h3>
-              <p>{medicine.description}</p>
-            </div>
-          ))}
-        </div>
+        {loading ? (
+          <p>Loading medicines...</p>
+        ) : (
+          <div className="medicine-grid">
+            {medicines.map((medicine) => {
+              const { id, name, description, price, image } = medicine;
+
+              // Extracting the image URL (thumbnail format)
+              const imageUrl = image?.[0]?.formats?.thumbnail?.url
+                ? `http://localhost:1337${image[0].formats.thumbnail.url}`
+                : null;
+
+              // Extracting a textual description
+              const descriptionText =
+                description?.[0]?.children?.[0]?.text || 'No description available.';
+
+              return (
+                <div key={id} className="medicine-item">
+                  {imageUrl && <img src={imageUrl} alt={name} className="medicine-image" />}
+                  <h3>{name}</h3>
+                  <p>{descriptionText}</p>
+                  <p><strong>Price:</strong> ₹{price}</p>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </section>
 
       {/* Footer */}

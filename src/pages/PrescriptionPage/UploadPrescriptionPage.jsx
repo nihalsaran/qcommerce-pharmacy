@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Tesseract from 'tesseract.js';
-import { useNavigate } from 'react-router-dom';
+import nlp from 'compromise';
 import './UploadPrescriptionPage.css';
 
 const UploadPrescriptionPage = () => {
@@ -8,21 +8,20 @@ const UploadPrescriptionPage = () => {
   const [ocrResult, setOcrResult] = useState('');
   const [medicines, setMedicines] = useState([]);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); // Add this hook
 
-  const handleBack = () => {
-    navigate(-1);
-  };
-
-  // Handle file input change
+  // Handle file change
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImage(URL.createObjectURL(file)); // Set image preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
-  // Handle OCR processing
+  // Extract text from prescription using Tesseract.js OCR
   const handleExtractText = () => {
     if (!image) {
       alert('Please upload an image');
@@ -32,11 +31,11 @@ const UploadPrescriptionPage = () => {
     setLoading(true);
 
     Tesseract.recognize(image, 'eng', {
-      logger: (m) => console.log(m), // Log progress
+      logger: (m) => console.log(m),
     })
       .then(({ data: { text } }) => {
-        setOcrResult(text); // Display extracted text
-        extractMedicines(text); // Extract medicines from the text
+        setOcrResult(text); // Set the extracted text
+        extractMedicinesWithCompromise(text); // Pass the text to Compromise.js for extraction
       })
       .catch((err) => {
         console.error('OCR Error:', err);
@@ -45,46 +44,54 @@ const UploadPrescriptionPage = () => {
       .finally(() => setLoading(false));
   };
 
-  // Extract medicine names (mock function for demo)
-  const extractMedicines = (text) => {
-    // Example extraction - replace with more sophisticated NLP or regex logic
-    const mockMedicines = ['Paracetamol', 'Aspirin', 'Ibuprofen'];
-    const foundMedicines = mockMedicines.filter((medicine) => text.includes(medicine));
-    setMedicines(foundMedicines);
+  // Extract medicine names using Compromise.js
+  const extractMedicinesWithCompromise = (text) => {
+    try {
+      const doc = nlp(text); // Process the text using Compromise.js
+      const medicineEntities = doc.match('#Medicine').out('array'); // Extract entities related to medicines
+
+      setMedicines(medicineEntities); // Set extracted medicines to state
+    } catch (err) {
+      console.error('Error extracting medicines:', err);
+      alert('Error processing the medicines');
+    }
+  };
+
+  // Handle adding medicine to cart
+  const handleAddToCart = (medicine) => {
+    console.log(`${medicine} added to cart.`);
+    // Implement the actual cart logic here (e.g., update state, save to localStorage, etc.)
   };
 
   return (
     <div className="upload-page">
       <header className="header">
-      <button onClick={handleBack} className="back-button">
-          ← Back
-        </button>
-        <div className="logo">PharmIt</div>
+        <div className="logo">MediQuick</div>
       </header>
 
       <section className="upload-section">
         <h1>Upload Your Prescription</h1>
-        
-        {/* Image Upload Section */}
+
+        {/* File input */}
         <input
           type="file"
           accept="image/*"
           onChange={handleFileChange}
           className="upload-input"
         />
-        
+
         {image && (
           <div className="image-preview">
             <img src={image} alt="Prescription Preview" />
           </div>
         )}
 
-        {/* OCR Processing Button */}
+        {/* Extract text button */}
         <button onClick={handleExtractText} className="extract-button" disabled={loading}>
           {loading ? 'Processing...' : 'Extract Text from Prescription'}
         </button>
 
-        {/* OCR Result and Medicine List */}
+        {/* OCR result */}
         {ocrResult && (
           <div className="ocr-result">
             <h2>Extracted Text:</h2>
@@ -92,13 +99,18 @@ const UploadPrescriptionPage = () => {
           </div>
         )}
 
-        {/* Medicine List */}
+        {/* Display medicines */}
         {medicines.length > 0 && (
           <div className="medicine-list">
             <h3>Medicines Found:</h3>
             <ul>
               {medicines.map((medicine, idx) => (
-                <li key={idx}>{medicine}</li>
+                <li key={idx}>
+                  {medicine}
+                  <button onClick={() => handleAddToCart(medicine)} className="add-to-cart">
+                    Add to Cart
+                  </button>
+                </li>
               ))}
             </ul>
           </div>
@@ -106,7 +118,8 @@ const UploadPrescriptionPage = () => {
       </section>
 
       <footer className="footer">
-        <p>&copy; 2024 PharmIt. All rights reserved.</p>
+        <p>&copy; 2024 MediQuick. All rights reserved.</p>
+        <p>Contact Us: support@mediquick.com</p>
       </footer>
     </div>
   );

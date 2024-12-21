@@ -5,57 +5,69 @@ import { useNavigate } from 'react-router-dom';
 const SearchPage = () => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
+  const [originalResults, setOriginalResults] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
-  const navigate = useNavigate(); // Add this hook
+  const [searchPerformed, setSearchPerformed] = useState(false);
+  const navigate = useNavigate();
 
-  // Sample data (Replace this with data fetched from backend)
-  const medicineList = [
-    { id: 1, name: 'Paracetamol', description: 'Pain reliever and fever reducer' },
-    { id: 2, name: 'Aspirin', description: 'Anti-inflammatory drug' },
-    { id: 3, name: 'Ibuprofen', description: 'Anti-inflammatory and pain relief' },
-    { id: 4, name: 'Amoxicillin', description: 'Antibiotic for infections' },
-    // Add more medicine data here...
-  ];
   const handleBack = () => {
     navigate(-1);
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
-    const filteredResults = medicineList.filter((medicine) =>
+    const filteredResults = originalResults.filter((medicine) =>
       medicine.name.toLowerCase().includes(query.toLowerCase())
     );
     setResults(filteredResults);
+    setSearchPerformed(true);
   };
 
   useEffect(() => {
-    setSuggestions([]); // Clear suggestions on mount
+    const fetchMedicines = async () => {
+      try {
+        const response = await fetch('https://scz1zjz2-1337.inc1.devtunnels.ms/api/medicines?populate=*');
+        const jsonData = await response.json();
+        setOriginalResults(jsonData.data);
+        setResults(jsonData.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchMedicines();
   }, []);
 
   const handleQueryChange = (e) => {
     const value = e.target.value;
     setQuery(value);
-    
+
     if (value.trim() === '') {
       setSuggestions([]);
+      setSearchPerformed(false);
+      setResults(originalResults);
       return;
     }
 
-    const filteredSuggestions = medicineList.filter((medicine) =>
+    const filteredSuggestions = originalResults.filter((medicine) =>
       medicine.name.toLowerCase().includes(value.toLowerCase())
     );
-    setSuggestions(filteredSuggestions);
+    setSuggestions(filteredSuggestions.slice(0, 5));
   };
 
   const handleSuggestionClick = (suggestionName) => {
     setQuery(suggestionName);
-    setSuggestions([]); // Clear suggestions when one is selected
+    setSuggestions([]);
+    const filteredResults = originalResults.filter((medicine) =>
+      medicine.name.toLowerCase() === suggestionName.toLowerCase()
+    );
+    setResults(filteredResults);
+    setSearchPerformed(true);
   };
 
   return (
     <div className="search-page">
       <header className="header">
-      <button onClick={handleBack} className="back-button">
+        <button onClick={handleBack} className="back-button">
           ← Back
         </button>
         <div className="logo">PharmIt</div>
@@ -74,30 +86,43 @@ const SearchPage = () => {
           <button type="submit" className="search-button">Search</button>
         </form>
 
-        {/* Display Suggestions */}
         {suggestions.length > 0 && (
           <ul className="suggestions-list">
-            {suggestions.slice(0, 5).map((suggestion) => (
-              <li key={suggestion.id} className="suggestion-item" onClick={() => handleSuggestionClick(suggestion.name)}>
+            {suggestions.map((suggestion) => (
+              <li 
+                key={suggestion.id} 
+                className="suggestion-item" 
+                onClick={() => handleSuggestionClick(suggestion.name)}
+              >
                 {suggestion.name}
               </li>
             ))}
           </ul>
         )}
 
-        <div className="results">
-          {results.length === 0 ? (
-            <p>No medicines found</p>
-          ) : (
-            results.map((medicine) => (
-              <div key={medicine.id} className="medicine-item">
-                <h3>{medicine.name}</h3>
-                <p>{medicine.description}</p>
-                <button className="add-to-cart">Add to Cart</button>
-              </div>
-            ))
-          )}
-        </div>
+        {searchPerformed && (
+          <div className="results">
+            {results.length === 0 ? (
+              <p>No medicines found</p>
+            ) : (
+              results.map((medicine) => (
+                <div key={medicine.id} className="medicine-item">
+                  <h3>{medicine.name}</h3>
+                  {Array.isArray(medicine.description) ? (
+                    medicine.description.map((descBlock, idx) => (
+                      <p key={idx}>
+                        {descBlock.children.map(child => child.text).join(' ')}
+                      </p>
+                    ))
+                  ) : (
+                    <p>{medicine.description}</p>
+                  )}
+                  <button className="add-to-cart">Add to Cart</button>
+                </div>
+              ))
+            )}
+          </div>
+        )}
       </section>
 
       <footer className="footer">

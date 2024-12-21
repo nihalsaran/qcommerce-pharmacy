@@ -109,7 +109,7 @@ const LandingPage = () => {
 
               // Extracting the image URL (thumbnail format)
               const imageUrl = image?.[0]?.formats?.thumbnail?.url
-                ? `http://localhost:1337${image[0].formats.thumbnail.url}`
+                ? `https://scz1zjz2-1337.inc1.devtunnels.ms${image[0].formats.thumbnail.url}`
                 : null;
 
               // Extracting a textual description

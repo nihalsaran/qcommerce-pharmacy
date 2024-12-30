@@ -10,6 +10,7 @@ const SearchPage = () => {
   const [searchPerformed, setSearchPerformed] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const [showLogin1Popup, setShowLogin1Popup] = useState(false);
   const navigate = useNavigate();
 
   const handleBack = () => {
@@ -75,15 +76,20 @@ const SearchPage = () => {
   };
 
   const handleAddToCart = (medicine) => {
+    if (!isAuthenticated) {
+      setShowLogin1Popup(true);
+      return;
+    }
+  
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     const itemIndex = cart.findIndex((item) => item.id === medicine.id);
-
+  
     if (itemIndex !== -1) {
       cart[itemIndex].quantity += 1;
     } else {
       cart.push({ ...medicine, quantity: 1 });
     }
-
+  
     localStorage.setItem("cart", JSON.stringify(cart));
     alert(`${medicine.name} added to the cart!`);
   };
@@ -115,6 +121,19 @@ const SearchPage = () => {
             <div className="popup-buttons">
               <Link to="/login" className="login-btn">Login</Link>
               <button onClick={() => setShowLoginPopup(false)} className="close-btn">Close</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+{showLogin1Popup && (
+        <div className="popup-overlay">
+          <div className="popup">
+            <h3>Please Login</h3>
+            <p>You need to login to add medicines to the cart</p>
+            <div className="popup-buttons">
+              <Link to="/login" className="login-btn">Login</Link>
+              <button onClick={() => setShowLogin1Popup(false)} className="close-btn">Close</button>
             </div>
           </div>
         </div>

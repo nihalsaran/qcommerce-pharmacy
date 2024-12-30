@@ -5,6 +5,7 @@ import SearchPage from './pages/SeachPage/SearchPage';
 import UploadPrescriptionPage from './pages/PrescriptionPage/UploadPrescriptionPage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import RegisterPage from './pages/RegistrationPage/RegisterPage';
+import CartPage from './pages/CartPage/CartPage';
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
         <Route path="/upload" element={<UploadPrescriptionPage/>} />
         <Route path="/login" element={<LoginPage/>} />
         <Route path="/register" element={<RegisterPage/>} />
-        <Route path="/cart" element={<div>Cart Page</div>} />
+        <Route path="/cart" element={<CartPage/>} />
       </Routes>
     </Router>
   );

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './LandingPage.css';
 
-const API_BASE_URL = 'https://scz1zjz2-1337.inc1.devtunnels.ms/api'; // Replace with your Strapi base URL
+const API_BASE_URL = 'https://api-pharmit.online/api'; // Replace with your Strapi base URL
 
 const LandingPage = () => {
   const [medicines, setMedicines] = useState([]);
@@ -109,7 +109,7 @@ const LandingPage = () => {
 
               // Extracting the image URL (thumbnail format)
               const imageUrl = image?.[0]?.formats?.thumbnail?.url
-                ? `https://scz1zjz2-1337.inc1.devtunnels.ms${image[0].formats.thumbnail.url}`
+                ? `https://api-pharmit.online${image[0].formats.thumbnail.url}`
                 : null;
 
               // Extracting a textual description

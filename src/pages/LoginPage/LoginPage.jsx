@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './LoginPage.css'; // Add appropriate styles
 
-const API_BASE_URL = 'https://scz1zjz2-1337.inc1.devtunnels.ms/api'; // Replace with your Strapi base URL
+const API_BASE_URL = 'https://api-pharmit.online/api'; // Replace with your Strapi base URL
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
